@@ -1,491 +1,298 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JAnalytics — Documentation & Quickstart</title>
-  <link rel="shortcut icon" href="Logo.png" type="image/x-icon">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Small helper for code blocks */
-    .code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono"; font-size: 0.95rem; }
-    html { scroll-behavior: smooth; }
-    .toc-active { background: linear-gradient(90deg, rgba(99,102,241,0.06), transparent); border-left: 3px solid rgb(99 102 241); padding-left: 0.5rem; }
-    pre { max-height: 48vh; overflow: auto; }
-    .fade-bottom { position: relative; }
-    .fade-bottom:after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3rem; pointer-events: none; background: linear-gradient(transparent, rgba(255,255,255,0.85)); }
-    .dark .fade-bottom:after { background: linear-gradient(transparent, rgba(17,24,39,0.85)); }
-    .badge { display:inline-block; padding:.2rem .5rem; border-radius:.4rem; font-size:.75rem; background:rgba(255,255,255,0.08); }
-    .hero-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono"; background:rgba(255,255,255,0.05); padding:.15rem .4rem; border-radius:.35rem; }
-    .small { font-size:.875rem; }
-  </style>
-</head>
-<body class="bg-gray-50 text-gray-800 antialiased">
-<!-- TOP / HERO -->
-<header class="bg-gradient-to-br from-blue-700 to-indigo-800 text-white">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+<!DOCTYPE html><html lang="en"> <head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width, initial-scale=1" /> <title>JAnalytics — Documentation & Quickstart</title> <link rel="shortcut icon" href="Logo.png" type="image/x-icon"> <script src="https://cdn.tailwindcss.com"></script> <style> /* Small helper for code blocks */ .code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono"; font-size: 0.95rem; } html { scroll-behavior: smooth; } .toc-active { background: linear-gradient(90deg, rgba(99,102,241,0.06), transparent); border-left: 3px solid rgb(99 102 241); padding-left: 0.5rem; } pre { max-height: 48vh; overflow: auto; } .fade-bottom { position: relative; } .fade-bottom:after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3rem; pointer-events: none; background: linear-gradient(transparent, rgba(255,255,255,0.85)); } .dark .fade-bottom:after { background: linear-gradient(transparent, rgba(17,24,39,0.85)); } .badge { display:inline-block; padding:.2rem .5rem; border-radius:.4rem; font-size:.75rem; background:rgba(255,255,255,0.08); } .hero-code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono"; background:rgba(255,255,255,0.05); padding:.15rem .4rem; border-radius:.35rem; } .small { font-size:.875rem; } </style> </head> <body class="bg-gray-50 text-gray-800 antialiased"> <!-- TOP / HERO --> <header class="bg-gradient-to-br from-blue-700 to-indigo-800 text-white"> <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4"> <div class="flex items-center gap-3"> <div class="w-10 h-10 bg-white/10 rounded flex items-center justify-center font-bold text-xl select-none">JA</div> <div> <div class="font-semibold text-lg">JAnalytics</div> <div class="text-xs opacity-80">Pure Java DataFrame - pandas-inspired API - built-in plotting & ML models - <span class="font-semibold">GPT-powered AI question answering</span></div> </div> </div>
     <div class="flex items-center gap-3">
-      <div class="w-10 h-10 bg-white/10 rounded flex items-center justify-center font-bold">JA</div>
-      <div>
-        <div class="font-semibold text-lg">JAnalytics</div>
-        <div class="text-xs opacity-80">Pure Java DataFrame • pandas-inspired API • built-in plotting & predictors</div>
-      </div>
-    </div>
-
-    <div class="flex items-center gap-3">
-      <div class="hidden md:block">
-        <input id="globalSearch" type="search" placeholder="Search docs..." class="px-3 py-2 rounded-md text-black w-64"/>
-      </div>
-
-          <a href="https://www.facebook.com/johndavid.laniohan" target="_blank" rel="noopener" title="Facebook profile" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded">
-        <!-- facebook svg -->
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
-          <path d="M22.675 0H1.325C.594 0 0 .594 0 1.325V22.68c0 .73.594 1.32 1.325 1.32H12.82v-9.84H9.692v-3.84h3.13V7.32c0-3.1 1.894-4.785 4.66-4.785 1.325 0 2.465.1 2.795.145v3.24h-1.917c-1.504 0-1.795.715-1.795 1.765v2.31h3.59l-.47 3.84h-3.12V24h6.125c.73 0 1.325-.59 1.325-1.32V1.325C24 .594 23.405 0 22.675 0z"/>
-        </svg>
-        <span class="hidden sm:inline font-medium">Facebook</span>
-      </a>
-
-      <a href="#documentation" class="hidden md:inline-block hover:underline">Documentation</a>
-      <a href="#download" class="hidden md:inline-block bg-white text-blue-800 px-4 py-2 rounded shadow">Download</a>
-      <button id="dmToggle" class="ml-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded" title="Toggle dark mode">
-        <svg id="dmIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5"><path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1Zm0 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM4.22 5.47a1 1 0 0 1 1.41 0l.7.7a1 1 0 1 1-1.41 1.42l-.7-.7a1 1 0 0 1 0-1.41ZM17.67 18.92a1 1 0 0 1 1.41 0l.7.7a1 1 0 0 1-1.41 1.41l-.7-.7a1 1 0 0 1 0-1.41ZM3 13a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm16 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1ZM4.22 18.53a1 1 0 0 1 0 1.41l-.7.7a1 1 0 1 1-1.41-1.41l.7-.7a1 1 0 0 1 1.41 0ZM19.78 5.08a1 1 0 0 1 0 1.41l-.7.7a1 1 0 1 1-1.41-1.41l.7-.7a1 1 0 0 1 1.41 0ZM12 6a6 6 0 1 0 6 6 6.007 6.007 0 0 0-6-6Z"/></svg>
-      </button>
-    </div>
-    
+  <div class="hidden md:block">
+    <input id="globalSearch" type="search" placeholder="Search docs..." class="px-3 py-2 rounded-md text-black w-64"/>
   </div>
-  
 
-  <div class="max-w-4xl mx-auto px-6 text-center py-20">
-    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">JAnalytics</h1>
-    <p class="text-lg md:text-2xl max-w-3xl mx-auto mb-6 opacity-90">A tiny, fast Java DataFrame library — <span class="font-semibold">print a DataFrame directly</span>, plot from the JVM, and run lightweight predictors — all without JNI or heavyweight dependencies.</p>
+      <a href="https://www.facebook.com/johndavid.laniohan" target="_blank" rel="noopener" title="Facebook profile" class="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded">
+    <!-- facebook svg -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
+      <path d="M22.675 0H1.325C.594 0 0 .594 0 1.325V22.68c0 .73.594 1.32 1.325 1.32H12.82v-9.84H9.692v-3.84h3.13V7.32c0-3.1 1.894-4.785 4.66-4.785 1.325 0 2.465.1 2.795.145v3.24h-1.917c-1.504 0-1.795.715-1.795 1.765v2.31h3.59l-.47 3.84h-3.12V24h6.125c.73 0 1.325-.59 1.325-1.32V1.325C24 .594 23.405 0 22.675 0z"/>
+    </svg>
+    <span class="hidden sm:inline font-medium">Facebook</span>
+  </a>
 
+  <a href="#api" class="hidden md:inline-block hover:underline">Documentation</a>
+  <a href="#download" class="hidden md:inline-block bg-white text-blue-800 px-4 py-2 rounded shadow">Download</a>
+  <button id="dmToggle" class="ml-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded" title="Toggle dark mode">
+    <svg id="dmIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5"><path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1Zm0 16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM4.22 5.47a1 1 0 0 1 1.41 0l.7.7a1 1 0 1 1-1.41 1.42l-.7-.7a1 1 0 0 1 0-1.41ZM17.67 18.92a1 1 0 0 1 1.41 0l.7.7a1 1 0 0 1-1.41 1.41l-.7-.7a1 1 0 0 1 0-1.41ZM3 13a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H4a1 1 0 0 1-1-1Zm16 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1ZM4.22 18.53a1 1 0 0 1 0 1.41l-.7.7a1 1 0 1 1-1.41-1.41l.7-.7a1 1 0 0 1 1.41 0ZM19.78 5.08a1 1 0 0 1 0 1.41l-.7.7a1 1 0 1 1-1.41-1.41l.7-.7a1 1 0 0 1 1.41 0ZM12 6a6 6 0 1 0 6 6 6.007 6.007 0 0 0-6-6Z"/></svg>
+  </button>
+</div>
+</div> <div class="max-w-4xl mx-auto px-6 text-center py-20"> <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">JAnalytics</h1> <p class="text-lg md:text-2xl max-w-3xl mx-auto mb-6 opacity-90">A tiny, fast Java DataFrame library — <span class="font-semibold">print your DataFrame directly</span>, plot from the JVM, run lightweight ML models, and <span class="font-semibold">ask questions naturally using the built-in GPT-based generative AI</span> — all without JNI or heavy dependencies.</p>
     <div class="flex items-center justify-center gap-4">
-      <a href="#quickstart" class="bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg shadow hover:bg-gray-100">Get Started</a>
-      <a href="#examples" class="bg-white/20 border border-white/30 px-6 py-3 rounded-lg hover:bg-white/10">See Examples</a>
-    </div>
+  <a href="#quickstart" class="bg-white text-blue-700 font-semibold px-6 py-3 rounded-lg shadow hover:bg-gray-100">Get Started</a>
+  <a href="#examples" class="bg-white/20 border border-white/30 px-6 py-3 rounded-lg hover:bg-white/10">See Examples</a>
+</div>
 
-    <p class="mt-6 text-sm max-w-2xl mx-auto opacity-80">Load CSVs in one line, inspect instantly with <span class="hero-code">System.out.println(df)</span>, and use pre-made plotting & predictor classes right away.</p>
-    <div class="mt-4 text-xs opacity-80">Stable • v1.2.0 • MIT License</div>
-  </div>
-</header>
-
-<!-- MAIN LAYOUT -->
-<main class="max-w-7xl mx-auto px-4 md:px-6 -mt-20">
-  <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="w-full md:w-72 bg-slate-50 p-6 border-r sticky top-8 h-auto md:h-[calc(100vh-4rem)] overflow-y-auto">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-bold">Contents</h2>
-        <button id="tocCollapseBtn" class="text-sm text-slate-600">Collapse</button>
-      </div>
-
+<p class="mt-6 text-sm max-w-2xl mx-auto opacity-80">Load CSVs in one line, inspect instantly with <span class="hero-code">System.out.println(df)</span>, and leverage built-in plotting & ML predictor classes immediately.</p>
+<div class="mt-4 text-xs opacity-80">Stable -  v1.2.0 -  MIT License</div>
+</div> </header><!-- MAIN LAYOUT --><main class="max-w-7xl mx-auto px-4 md:px-6 -mt-20"> <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row"> <!-- SIDEBAR --> <aside id="sidebar" class="w-full md:w-72 bg-slate-50 p-6 border-r sticky top-8 h-auto md:h-[calc(100vh-4rem)] overflow-y-auto"> <div class="flex items-center justify-between mb-4"> <h2 class="text-lg font-bold">Contents</h2> <button id="tocCollapseBtn" class="text-sm text-slate-600">Collapse</button> </div>
       <nav id="toc" class="space-y-2 text-sm text-slate-700">
-        <a href="#download" class="block py-1">Download & Install</a>
-        <a href="#quickstart" class="block py-1">Quickstart</a>
-        <a href="#api" class="block py-1">API Reference</a>
-        <div class="mt-2 ml-4 text-xs text-slate-500">Core</div>
-        <a href="#readCSV" class="block py-1 ml-4">readCSV()</a>
-        <a href="#print" class="block py-1 ml-4">Printing</a>
-        <a href="#plots" class="block py-1 ml-4">Plotting (PlotBuilder)</a>
-        <a href="#predictors" class="block py-1 ml-4">Predictors</a>
-        <a href="#examples" class="block py-1 mt-2">Examples</a>
-        <a href="#notes" class="block py-1">Notes & Best Practices</a>
-      </nav>
+    <a href="#download" class="block py-1">Download & Install</a>
+    <a href="#quickstart" class="block py-1">Quickstart</a>
+    <a href="#api" class="block py-1">API Reference</a>
+    <div class="mt-2 ml-4 text-xs text-slate-500">Core</div>
+    <a href="#readCSV" class="block py-1 ml-4">readCSV()</a>
+    <a href="#print" class="block py-1 ml-4">Printing</a>
+    <a href="#plots" class="block py-1 ml-4">Plotting (PlotBuilder)</a>
+    <a href="#predictors" class="block py-1 ml-4">Predictors</a>
+    <a href="#generative" class="block py-1 ml-4">Generative Model (GPT)</a>
+    <a href="#examples" class="block py-1 mt-2">Examples</a>
+    <a href="#notes" class="block py-1">Notes & Best Practices</a>
+  </nav>
 
-      <div class="mt-6 p-4 bg-gradient-to-r from-white to-blue-50 rounded-lg border">
-        <div class="text-xs text-slate-500">Status</div>
-        <div class="font-semibold mt-1">Stable • v1.2.0</div>
-        <div class="mt-2 text-xs text-slate-500">License: MIT</div>
-      </div>
+  <div class="mt-6 p-4 bg-gradient-to-r from-white to-blue-50 rounded-lg border">
+    <div class="text-xs text-slate-500">Status</div>
+    <div class="font-semibold mt-1">Stable -  v1.2.0</div>
+    <div class="mt-2 text-xs text-slate-500">License: MIT</div>
+  </div>
 
-      <div class="mt-6">
-        <button id="printPdf" class="w-full bg-blue-600 text-white px-3 py-2 rounded">Export as PDF (print)</button>
-      </div>
-    </aside>
+  <div class="mt-6">
+    <button id="printPdf" class="w-full bg-blue-600 text-white px-3 py-2 rounded">Export as PDF (print)</button>
+  </div>
+</aside>
 
-    <!-- CONTENT -->
-    <article class="flex-1 p-8 overflow-y-auto">
-      <!-- DOWNLOAD -->
+<!-- CONTENT -->
+<article class="flex-1 p-8 overflow-y-auto">
 
-      <!-- DOWNLOAD -->
-<section id="download" class="mb-12">
-  <h3 class="text-3xl font-bold mb-3">Download & Install</h3>
-  <p class="mb-4">JAnalytics can be used in multiple ways — choose what fits your project:</p>
+  <!-- DOWNLOAD -->
+  <section id="download" class="mb-12">
+    <h3 class="text-3xl font-bold mb-3">Download & Install</h3>
+    <p class="mb-4">JAnalytics can be integrated into your Java projects conveniently — select the method that fits best:</p>
 
-  <div class="grid md:grid-cols-3 gap-4">
-
-    <!-- Folder Option -->
-    <div class="p-4 border rounded-lg">
-      <div class="text-sm font-medium text-slate-600">Folder / ZIP</div>
-      <div class="mt-2 text-sm">Download the <code>JData</code> folder (or ZIP containing it) and place it in your project. Make sure the folder structure matches the package <code>JData</code> in your imports.</div>
-      <pre class="bg-slate-100 p-3 mt-2 rounded text-sm code overflow-x-auto"><code>project/
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="p-4 border rounded-lg">
+        <div class="text-sm font-medium text-slate-600">Folder / ZIP</div>
+        <div class="mt-2 text-sm">Download the <code>JData</code> folder (or ZIP) and include it directly in your project folder maintaining package structure.</div>
+        <pre class="bg-slate-100 p-3 mt-2 rounded text-sm code overflow-x-auto"><code>project/
 ├─ src/
-│  └─ Main.java
+│ └─ Main.java
 └─ JData/
-   └─ JAnalytics.java</code></pre>
-      <div class="mt-2 text-sm">Usage in your code:</div>
-      <pre class="bg-slate-100 p-3 mt-1 rounded text-sm code overflow-x-auto"><code>import JData.JAnalytics;
+</code></pre>
+<div class="mt-2 text-sm">Usage:</div>
+<pre class="bg-slate-100 p-3 mt-1 rounded text-sm code overflow-x-auto"><code>import JData.JAnalytics;
 
 public class Main {
-  public static void main(String[] args) {
-    JAnalytics df = new JAnalytics();
-    df.readCSV("data.csv");
-    System.out.println(df);
-  }
-}</code></pre>
+public static void main(String[] args)
+{ JAnalytics df = new JAnalyt
+cs(); df.readCSV("d
+ta.csv"); System.out.print(df);}}
+</code></pre>
+</div>
+      <div class="p-4 border rounded-lg">
+        <div class="text-sm font-medium text-slate-600">Gradle</div>
+        <pre class="bg-slate-100 p-3 mt-2 rounded text-sm code overflow-x-auto"><code>implementation 'com.janalytics:janalytics:1.2.0'</code></pre>
+        <button class="mt-2 copyBtn text-xs text-slate-600" data-copy="implementation 'com.janalytics:janalytics:1.2.0'">Copy</button>
+      </div>
+
+      <div class="p-4 border rounded-lg">
+        <div class="text-sm font-medium text-slate-600">Maven</div>
+        <pre class="bg-slate-100 p-3 mt-2 rounded text-sm code overflow-x-auto"><code>&lt;dependency&gt;
+&lt;groupId&gt;com.janalytics&lt;
+groupId&gt; &lt;artifactId&gt;jan
+lytics&lt;/artifactId&gt
+</code></pre>
+<button class="mt-2 copyBtn text-xs text-slate-600" data-copy="&lt;dependency&gt; &lt;groupId&gt;com.janalytics&lt;/groupId&gt; &lt;artifactId&gt;janalytics&lt;/artifactId&gt; &lt;version&gt;1.2.0&lt;/version&gt; &lt;/dependency&gt;">Copy</button>
+</div>
+</div>
+    <div class="mt-4 text-sm text-slate-700">
+      Tip: Using the folder approach is ideal if you prefer no external JAR dependency—just ensure the package structure <code>JData</code> remains consistent.
     </div>
+    <a href="JData.zip" class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded">Download ZIP</a>
+  </section>
 
-    <div class="p-4 border rounded-lg">
-            <div class="text-sm font-medium text-slate-600">Gradle</div>
-            <pre class="bg-slate-100 p-3 mt-2 rounded text-sm code overflow-x-auto"><code>implementation 'com.janalytics:janalytics:1.2.0'</code></pre>
-            <button class="mt-2 copyBtn text-xs text-slate-600" data-copy="implementation 'com.janalytics:janalytics:1.2.0'">Copy</button>
-          </div>
+  <!-- QUICKSTART -->
+  <section id="quickstart" class="mb-12">
+    <h3 class="text-3xl font-bold mb-3">Quickstart — Load CSV & Inspect Instantly</h3>
+    <p class="mb-4">JAnalytics is lightweight and straightforward. Instantly load and inspect dataframes by printing them directly with <code>System.out.println(df)</code>. No helpers or magic needed.</p>
 
-    <!-- Maven Option -->
-    <div class="p-4 border rounded-lg">
-      <div class="text-sm font-medium text-slate-600">Maven</div>
-      <pre class="bg-slate-100 p-3 mt-2 rounded text-sm code overflow-x-auto"><code>&lt;dependency&gt;
-  &lt;groupId&gt;com.janalytics&lt;/groupId&gt;
-  &lt;artifactId&gt;janalytics&lt;/artifactId&gt;
-  &lt;version&gt;1.2.0&lt;/version&gt;
-&lt;/dependency&gt;</code></pre>
-      <button class="mt-2 copyBtn text-xs text-slate-600" data-copy="&lt;dependency&gt;
-  &lt;groupId&gt;com.janalytics&lt;/groupId&gt;
-  &lt;artifactId&gt;janalytics&lt;/artifactId&gt;
-  &lt;version&gt;1.2.0&lt;/version&gt;
-&lt;/dependency&gt;">Copy</button>
-    </div>
-  </div>
+    <div class="bg-slate-900 text-white p-4 rounded code relative">
+      <div class="flex items-center justify-between mb-3">
+        <div class="font-semibold">Java Example</div>
+        <div class="flex items-center gap-2">
+          <button class="copyBtn bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-xs" data-copy='JAnalytics df = new JAnalytics();\ndf.readCSV("sales.csv");\nSystem.out.println(df);'>Copy</button>
+          <button class="collapseBtn bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-xs">Toggle</button>
+        </div>
+      </div>
 
-  <div class="mt-4 text-sm text-slate-700">
-    Tip: Using the folder approach is ideal for projects that want a lightweight, JAR-free setup. Just make sure the folder matches the package name <code>JData</code>.
-  </div>
-  <a href="JData.zip" class="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded">Download ZIP</a>
-</section>
-
-      <!-- QUICKSTART -->
-      <section id="quickstart" class="mb-12">
-        <h3 class="text-3xl font-bold mb-3">Quickstart — Load CSV & Inspect Instantly</h3>
-        <p class="mb-4">The library is intentionally tiny. Typical workflow: instantiate, load, inspect — you can print the DataFrame directly with <code>System.out.println(df)</code>. No special helper is required.</p>
-
-        <div class="bg-slate-900 text-white p-4 rounded code relative">
-          <div class="flex items-center justify-between mb-3">
-            <div class="font-semibold">Java Example</div>
-            <div class="flex items-center gap-2">
-              <button class="copyBtn bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-xs" data-copy='JAnalytics df = new JAnalytics();\ndf.readCSV("sales.csv");\nSystem.out.println(df);'>Copy</button>
-              <button class="collapseBtn bg-white/10 hover:bg-white/20 px-2 py-1 rounded text-xs">Toggle</button>
-            </div>
-          </div>
-
-          <pre class="rounded code overflow-x-auto"><code id="quickJavaCode">import JData.JAnalytics;
-
+      <pre class="rounded code overflow-x-auto"><code id="quickJavaCode">import JData.JAnalytics;
 public class Main {
-  public static void main(String[] args) {
-    JAnalytics df = new JAnalytics();
-    df.readCSV("sales.csv");
+public static void main(String[] args)
+{ JAnalytics df = new JAnalyt // Quick inspect — prints formatted table
+System.out.println(df);
+}
+}</code></code></pre>
+</div>
+    <div class="mt-4 p-4 border-l-4 border-blue-600 bg-blue-50 rounded">
+      <div class="font-semibold">Instant introspection</div>
+      <p class="text-sm text-slate-700 mt-1">Thanks to <code>JAnalytics.toString()</code> printing a human-friendly tabular view, you can iterate quickly without extra tooling.</p>
+    </div>
+  </section>
 
-    // Quick inspection — prints a nicely formatted table
-    System.out.println(df);
-  }
-}</code></pre>
-        </div>
+  <!-- API REFERENCE -->
+  <section id="api" class="mb-12">
+    <h3 class="text-3xl font-bold mb-3">API Reference — Core Methods</h3>
 
-        <div class="mt-4 p-4 border-l-4 border-blue-600 bg-blue-50 rounded">
-          <div class="font-semibold">Instant introspection</div>
-          <p class="text-sm text-slate-700 mt-1">Because <code>JAnalytics.toString()</code> is human-friendly, you can iterate quickly in terminal or during development: just <code>System.out.println(df)</code>. No REPL helper required.</p>
-        </div>
-      </section>
-
-      <!-- API REFERENCE -->
-      <section id="api" class="mb-12">
-        <h3 class="text-3xl font-bold mb-3">API Reference — Core Methods (short)</h3>
-
-        <!-- readCSV -->
-        <article id="readCSV" class="mb-8">
-          <h4 class="text-2xl font-semibold">readCSV(String filename)</h4>
-          <p class="mt-2 text-slate-700">Read a CSV file. Header row becomes column names; blank or empty lines ignored. Use <code>toCSV</code> to write back.</p>
-
-          <div class="mt-3 grid md:grid-cols-2 gap-4">
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="text-sm font-medium">Parameters</div>
-              <ul class="text-sm mt-2 list-disc ml-5 text-slate-700">
-                <li><strong>filename</strong> (String) — path to CSV</li>
-              </ul>
-            </div>
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="text-sm font-medium">Returns</div>
-              <div class="text-sm mt-2 text-slate-700">void — DataFrame (df) updated in place; methods return copies where appropriate for chaining.</div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Printing -->
-        <article id="print" class="mb-8">
-          <h4 class="text-2xl font-semibold">Printing / Inspection</h4>
-          <p class="mt-2 text-slate-700">Human-friendly CLI output is a core productivity feature. <strong>Print df directly.</strong></p>
-
-          <div class="mt-3 grid md:grid-cols-2 gap-4">
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="font-medium">System.out.println(df)</div>
-              <div class="text-sm mt-2 text-slate-700">Renders a compact table: column headers, separator, then rows, using column widths sized to content.</div>
-            </div>
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="font-medium">df.toString()</div>
-              <div class="text-sm mt-2 text-slate-700">Return the same printable representation as a String.</div>
-            </div>
-          </div>
-
-          <pre class="bg-slate-100 p-3 mt-4 rounded code overflow-x-auto"><code>// example
-JAnalytics df = new JAnalytics();
-df.readCSV(\"people.csv\");
-System.out.println(df); // human-friendly table</code></pre>
-        </article>
-
-        <!-- Columns -->
-        <article id="columns" class="mb-8">
-          <h4 class="text-2xl font-semibold">Column accessors & transforms</h4>
-          <p class="mt-2 text-slate-700">The library offers convenience accessors (see code) and many transforms that mirror DataFrame-style APIs.</p>
-
-          <div class="grid md:grid-cols-3 gap-4 mt-4">
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="font-medium">getColumnAsDouble</div>
-              <div class="text-sm mt-2">List&lt;Double&gt; getColumnAsDouble(String columnName) — quietly skips non-numeric rows.</div>
-              <pre class="bg-white p-2 mt-3 rounded text-sm code overflow-x-auto"><code>List<Double> prices = df.getColumnAsDouble(\"Price\");</code></pre>
-            </div>
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="font-medium">astype / fillna / dropna</div>
-              <div class="text-sm mt-2">Type conversion, missing-value helpers and cleaning utilities are provided.</div>
-            </div>
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="font-medium">groupBy / agg / pivotTable</div>
-              <div class="text-sm mt-2">Grouping and aggregation functions (sum/mean/count) and pivot support for quick summarization.</div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Plots -->
-        <article id="plots" class="mb-8">
-          <h4 class="text-2xl font-semibold">Plotting — PlotBuilder (built-in)</h4>
-          <p class="mt-2 text-slate-700">PlotBuilder is included — simple API to show scatter, line, bar, hist, pie from JVM. It renders a Swing window (no external plotting dependency) and uses your DataFrame columns directly.</p>
-
-          <div class="grid md:grid-cols-3 gap-4 mt-4">
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="font-medium">Scatter / Line</div>
-              <pre class="bg-white p-2 mt-3 rounded text-sm code overflow-x-auto"><code>df.plot(\"x\",\"y\").title(\"My plot\").line(true).show();</code></pre>
-            </div>
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="font-medium">Histogram</div>
-              <pre class="bg-white p-2 mt-3 rounded text-sm code overflow-x-auto"><code>df.hist(\"price\").show();</code></pre>
-            </div>
-            <div class="p-4 border rounded bg-slate-50">
-              <div class="font-medium">Pie / Bar</div>
-              <pre class="bg-white p-2 mt-3 rounded text-sm code overflow-x-auto"><code>df.plot(\"cat\",\"value\").pie().show();</code></pre>
-            </div>
-          </div>
-
-          <div class="mt-3 p-3 border rounded bg-yellow-50 text-sm text-slate-700">
-            Note: Plot windows are Swing frames created from the JVM. For headless environments, use the data exported from df (CSV/JSON) and render elsewhere.
-          </div>
-        </article>
-
-        <!-- Predictors -->
-        <article id="predictors" class="mb-8">
-          <h4 class="text-2xl font-semibold">Predictors — ready-made ML utilities</h4>
-          <p class="mt-2 text-slate-700">JAnalytics bundles small fit-and-predict algorithms for quick experiments:</p>
-
-          <ul class="list-disc ml-6 mt-3 text-sm text-slate-700 space-y-1">
-            <li><strong>LinearRegressionModel</strong> — ordinary least squares for continuous targets.</li>
-            <li><strong>SVMModel</strong> — basic linear SVM style trainer (single-feature support in current implementation).</li>
-            <li><strong>SimpleNN</strong> — tiny single-layer gradient-updated regressor.</li>
-            <li><strong>DecisionTree</strong> — recursive variance-reducing tree for regression.</li>
-            <li><strong>KNN</strong> — k-nearest neighbors averaging.</li>
-            <li><strong>NaiveBayes</strong> — frequency-based simple classifier/regressor helper.</li>
+    <!-- readCSV -->
+    <article id="readCSV" class="mb-8">
+      <h4 class="text-2xl font-semibold">readCSV(String filename)</h4>
+      <p class="mt-2 text-slate-700">Load CSV files. The first row is parsed as column headers. Ignores blank or empty lines. Use <code>toCSV</code> to export.</p>
+      <div class="mt-3 grid md:grid-cols-2 gap-4">
+        <div class="p-4 border rounded bg-slate-50">
+          <div class="text-sm font-medium">Parameters</div>
+          <ul class="text-sm mt-2 list-disc ml-5 text-slate-700">
+            <li><strong>filename</strong> (String) - path to CSV file</li>
           </ul>
+        </div>
+        <div class="p-4 border rounded bg-slate-50">
+          <div class="text-sm font-medium">Returns</div>
+          <div class="text-sm mt-2 text-slate-700">void - updates dataframe in place; on chaining, returns new copies.</div>
+        </div>
+      </div>
+    </article>
 
-          <div class="mt-4 bg-slate-100 p-3 rounded code overflow-x-auto">
-            <div class="font-semibold">Example — Linear regression (multi-feature)</div>
-            <pre class="mt-2"><code>JAnalytics df = new JAnalytics();
+    <!-- Printing -->
+    <article id="print" class="mb-8">
+      <h4 class="text-2xl font-semibold">Printing / Inspection</h4>
+      <p class="mt-2 text-slate-700">Printing the dataframe directly with <code>System.out.println(df)</code> produces a human-friendly table with column headers, separator line, and rows sized by content width.</p>
+      <div class="mt-3 grid md:grid-cols-2 gap-4">
+        <div class="p-4 border rounded bg-slate-50">
+          <div class="font-medium">Example</div>
+          <pre class="text-sm">JAnalytics df = new JAnalytics();
+df.readCSV("people.csv");
+System.out.println(df); // nic</pre>
+</div>
+<div class="p-4 border rounded bg-slate-50">
+<div class="font-medium">toString()</div>
+<p class="text-sm">Same as printed output but returned as String for use in logs or UI.</p>
+</div>
+</div>
+</article>
+    <!-- Plotting -->
+    <article id="plots" class="mb-8">
+      <h4 class="text-2xl font-semibold">Plotting — PlotBuilder</h4>
+      <p class="mt-2 text-slate-700">PlotBuilder lets you render data visualizations like scatter, line, bar, histogram, and pie charts. It opens a Java Swing window without external dependencies.</p>
+      <div class="grid md:grid-cols-3 gap-4 mt-4">
+        <div class="p-4 border rounded bg-slate-50">
+          <div class="font-medium">Scatter / Line</div>
+          <pre class="text-sm">df.plot("x", "y").title("My plot").line(true).show();</pre>
+        </div>
+        <div class="p-4 border rounded bg-slate-50">
+          <div class="font-medium">Histogram</div>
+          <pre class="text-sm">df.hist("price").show();</pre>
+        </div>
+        <div class="p-4 border rounded bg-slate-50">
+          <div class="font-medium">Pie / Bar</div>
+          <pre class="text-sm">df.plot("cat","value").pie().show();</pre>
+        </div>
+      </div>
+      <div class="mt-3 p-3 border rounded bg-yellow-50 text-sm text-slate-700">
+        Note: Plot windows require GUI environment. For servers, export data for external plotting.
+      </div>
+    </article>
+
+    <!-- Predictors -->
+    <article id="predictors" class="mb-8">
+      <h4 class="text-2xl font-semibold">Predictors — Machine Learning Utilities</h4>
+      <p class="mt-2 text-slate-700">JAnalytics includes simple train-and-predict models:</p>
+      <ul class="list-disc ml-6 mt-3 text-sm text-slate-700 space-y-1">
+        <li><strong>LinearRegressionModel</strong> for least squares regression.</li>
+        <li><strong>SVMModel</strong> basic linear SVM, limited single feature.</li>
+        <li><strong>SimpleNN</strong> tiny single-layer neural net regressor.</li>
+        <li><strong>DecisionTree</strong> recursive split tree for regression.</li>
+        <li><strong>KNN</strong> k-nearest neighbors.</li>
+        <li><strong>NaiveBayes</strong> frequency based classifier/regressor.</li>
+      </ul>
+      <div class="mt-4 bg-slate-100 p-3 rounded code overflow-x-auto">
+        <div class="font-semibold">Example — Linear regression on dataset columns</div>
+        <pre><code>JAnalytics df = new JAnalytics();
 df.readCSV("sales.csv");
-
-// Train a linear model (target column "revenue", features "adSpend", "discount")
 JAnalytics.Predictors preds = new JAnalytics.Predictors(df);
-JAnalytics.Predictors.LinearRegressionModel lm = preds.new LinearRegressionModel();
-lm.train("revenue", "adSpend", "discount");
+JAnalytics.Predictors.LinearRegressionModel lr = preds.new LinearRegressionModel();
+lr.train("revenue", "adSpend", "discount");
+double forecast = lr.predict(1200.0, 5.0);
+</code></pre>
+</div>
+<div class="mt-3 text-sm text-slate-600">
+Models operate on numeric columns <code>getColumnAsDouble</code>. They are ideal for prototyping and exporting trained parameters.
+</div>
+</article>
+    <!-- Generative Model -->
+    <article id="generative" class="mb-8">
+      <h4 class="text-2xl font-semibold">Generative Model — Built-in GPT AI</h4>
+      <p class="mt-2 text-slate-700">JAnalytics uniquely integrates a proprietary GPT-based semantic question answering system trained on your own dataset. Ask complex questions naturally and get concise or detailed answers instantly — no external services required.</p>
+      <p class="mt-2 text-slate-700 font-semibold">Main features:</p>
+      <ul class="list-disc ml-6 mt-3 text-sm space-y-1 text-slate-700">
+        <li>Training using TF-IDF and dense embeddings with stemming and stop-word filtering.</li>
+        <li>Similarity-based search combining cosine and Jaccard metrics for high relevance.</li>
+        <li>Configurable epochs, learning rate, and result rank cutoff.</li>
+        <li>Supports different verbosity styles: concise, balanced, detailed.</li>
+        <li>Local, lightweight, self-contained — no cloud or external API needed.</li>
+      </ul>
+      <div class="mt-4 bg-slate-100 p-3 rounded code overflow-x-auto">
+        <div class="font-semibold">Example — Ask your dataset a question:</div>
+        <pre><code>GenerativeModel gpt = df.new GenerativeModel();
+gpt.trainFromFile("training.txt") // note you need only to train once since the model would cache it if you need to retrain delete the cache file;
+gpt.prompt(user prompt);
+System.out.println(gpt.answer());
+</code></pre>
+</div>
+<p class="mt-3 text-sm text-slate-700">Boost your data workflow by having AI assist with interpretation directly embedded in your Java projects.</p>
+</article>
+    <!-- Examples -->
+    <section id="examples" class="mb-12">
+      <h4 class="text-2xl font-semibold">Examples — Practical Code Snippets</h4>
 
-// Predict (features order must match training)
-double forecast = lm.predict(1200.0, 5.0);
-System.out.println("Forecast: " + forecast);</code></pre>
-          </div>
-
-          <div class="mt-3 text-sm text-slate-600">
-            Tips: models operate on columns extracted with <code>getColumnAsDouble</code>. Small and educational — good for prototyping; export coefficients or predictions to CSV for production pipelines.
-          </div>
-        </article>
-
-        <!-- Examples -->
-        <section id="examples" class="mb-12">
-          <h4 class="text-2xl font-semibold">Examples — Practical snippets</h4>
-
-          <div class="mt-4 p-4 border rounded bg-slate-50">
-            <div class="font-medium mb-2">From CSV to plot</div>
-            <pre class="bg-white p-3 rounded code overflow-x-auto"><code>// quick example
+      <div class="mt-4 p-4 border rounded bg-slate-50">
+        <div class="font-medium mb-2">Load CSV and create scatter plot</div>
+        <pre class="bg-white p-3 rounded code overflow-x-auto"><code>// load CSV and plot columns "day" vs "temp"
 JAnalytics df = new JAnalytics();
 df.readCSV("temps.csv");
-df.plot("day","temp").title("Daily temp").show();</code></pre>
-          </div>
-
-          <div class="mt-4 p-4 border rounded bg-slate-50">
-            <div class="font-medium mb-2">Prepare, train, predict</div>
-            <pre class="bg-white p-3 rounded code overflow-x-auto"><code>JAnalytics df = new JAnalytics();
+df.plot("day"),</code></pre>
+</div>
+      <div class="mt-4 p-4 border rounded bg-slate-50">
+        <div class="font-medium mb-2">Prepare data, train, and predict</div>
+        <pre class="bg-white p-3 rounded code overflow-x-auto"><code>JAnalytics df = new JAnalytics();
 df.readCSV("sales.csv");
-df.fillna("0"); // fill missing values
+df.fillna("0"); // handle missing values first
 
 JAnalytics.Predictors preds = new JAnalytics.Predictors(df);
 JAnalytics.Predictors.LinearRegressionModel p = preds.new LinearRegressionModel();
 p.train("revenue", "adSpend");
-System.out.println("Pred: " + p.predict(120.0));</code></pre>
-          </div>
+double prediction = p.predict(120.0);
+System.out.println("Predicted revenue: " + prediction);</code></pre>
+</div>
+      <div class="mt-4 p-4 border rounded bg-slate-50">
+        <div class="font-medium mb-2">Data transforms — melt and pivot</div>
+        <pre class="bg-white p-3 rounded code overflow-x-auto"><code>// Reshape data from wide to long
+JAnalytics melted = df.melt("id", "value");
 
-          <div class="mt-4 p-4 border rounded bg-slate-50">
-            <div class="font-medium mb-2">Data reshape — melt & pivot</div>
-            <pre class="bg-white p-3 rounded code overflow-x-auto"><code>// melt example (id = first column)
-JAnalytics melted = df.melt("id","value"); // returns transformed df
-
-// pivot back (index, columns, values)
+// Pivot long data back to wide
 JAnalytics pivoted = df.pivot("id", "variable", "value");</code></pre>
-          </div>
-        </section>
+</div>
+</section>
+    <!-- NOTES -->
+    <section id="notes" class="mb-6">
+      <h4 class="text-2xl font-semibold">Notes & Best Practices</h4>
+      <ul class="list-disc ml-6 mt-3 space-y-2 text-sm text-slate-700">
+        <li>For very large CSV files (100MB+), consider streaming or chunked reads to avoid memory issues — <code>readCSV()</code> loads all data at once.</li>
+        <li>Use <code>fillna()</code> or <code>dropna()</code> to handle missing/null data gracefully in pipelines.</li>
+        <li><code>JAnalytics</code> instances are not thread-safe; clone using <code>deepCopy()</code> before multi-threaded use.</li>
+        <li>Plotting uses Java Swing windows, so requires GUI environment — for headless servers export data via CSV/JSON instead.</li>
+        <li>Predictors included are minimal implementations suitable for prototyping and education; export results for full production use.</li>
+        <li>The GPT generative model operates fully locally, ensuring data privacy with no external calls.</li>
+      </ul>
+    </section>
 
-        <!-- NOTES -->
-        <section id="notes" class="mb-6">
-          <h4 class="text-2xl font-semibold">Notes & Best Practices</h4>
-          <ul class="list-disc ml-6 mt-3 space-y-2 text-sm text-slate-700">
-            <li>Large CSVs (&gt;100MB): prefer streaming or chunked processing to avoid OOM — the provided readCSV is simple and may load fully into memory.</li>
-            <li>Null handling: use <code>fillna()</code> or <code>dropna()</code> in data pipelines.</li>
-            <li>Thread-safety: the DataFrame is not thread-safe. Clone (<code>deepCopy()</code> internally) before concurrent operations.</li>
-            <li>Plots use Swing windows — headless servers require exporting to CSV/JSON instead.</li>
-            <li>Predictors are intentionally lightweight — export predictions or trained parameters for production use.</li>
-          </ul>
-        </section>
-
-        <div class="mt-8 p-6 bg-gradient-to-r from-white to-blue-50 rounded-lg border flex items-center justify-between">
-          <div>
-            <div class="text-lg font-semibold">Want this as a PDF or single-file site?</div>
-            <div class="text-sm text-slate-700 mt-1">Use the print/export button or click "Generate static export".</div>
-          </div>
-          <div>
-            <button id="downloadZip" class="bg-blue-600 text-white px-4 py-2 rounded">Generate static export</button>
-          </div>
-        </div>
-      </section>
-    </article>
-  </div>
-</main>
-
-<footer class="max-w-7xl mx-auto px-4 md:px-6 mt-12 py-6 text-sm text-slate-600 text-center">
-  © JAnalytics • Built with Java♨️ • v1.2.0
-</footer>
-
-<!-- JS UX -->
-<script>
-  // Dark mode (persist)
-  const dmToggle = document.getElementById('dmToggle');
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const saved = localStorage.getItem('janalytics-dark');
-  const isDark = saved ? saved === '1' : prefersDark;
-  if (isDark) document.documentElement.classList.add('dark'), document.body.classList.add('dark');
-  dmToggle.addEventListener('click', () => {
-    document.documentElement.classList.toggle('dark');
-    document.body.classList.toggle('dark');
-    localStorage.setItem('janalytics-dark', document.documentElement.classList.contains('dark') ? '1' : '0');
-  });
-
-  // Search (client-side simple)
-  const globalSearch = document.getElementById('globalSearch');
-  const searchHandler = (e) => {
-    const q = e.target.value.trim().toLowerCase();
-    const sections = Array.from(document.querySelectorAll('article, section, h4, h3'));
-    if (!q) { sections.forEach(s => s.style.display = ''); return; }
-    sections.forEach(s => {
-      const text = s.innerText.toLowerCase();
-      s.style.display = text.includes(q) ? '' : 'none';
-    });
-  };
-  if (globalSearch) globalSearch.addEventListener('input', searchHandler);
-
-  // Copy buttons
-  document.querySelectorAll('.copyBtn').forEach(btn => {
-    btn.addEventListener('click', async (ev) => {
-      const txt = btn.getAttribute('data-copy') || btn.closest('div')?.querySelector('pre code')?.innerText;
-      if (!txt) return;
-      try {
-        await navigator.clipboard.writeText(txt);
-        const old = btn.innerText;
-        btn.innerText = 'Copied!';
-        setTimeout(()=> btn.innerText = old, 1200);
-      } catch (e) {
-        alert('Copy failed — try selecting manually');
-      }
-    });
-  });
-
-  // Collapse toggle for code blocks with .collapseBtn
-  document.querySelectorAll('.collapseBtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const pre = btn.closest('.code')?.querySelector('pre');
-      if (!pre) return;
-      pre.classList.toggle('hidden');
-    });
-  });
-
-  // Simple scroll spy for TOC
-  const tocLinks = Array.from(document.querySelectorAll('#toc a'));
-  const headings = tocLinks.map(a => {
-    const id = a.getAttribute('href')?.slice(1);
-    return id ? document.getElementById(id) : null;
-  }).filter(Boolean);
-
-  function onScrollSpy(){
-    const offset = window.scrollY + 140;
-    let current = null;
-    for (const h of headings) {
-      if (h.offsetTop <= offset) current = h;
-    }
-    tocLinks.forEach(a => a.classList.remove('toc-active'));
-    if (current) {
-      const link = tocLinks.find(a => a.getAttribute('href')?.slice(1) === current.id);
-      if (link) link.classList.add('toc-active');
-    }
-  }
-  window.addEventListener('scroll', onScrollSpy);
-  onScrollSpy();
-
-  // Sidebar collapse
-  const tocCollapseBtn = document.getElementById('tocCollapseBtn');
-  const sidebar = document.getElementById('sidebar');
-  tocCollapseBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('hidden');
-    tocCollapseBtn.innerText = sidebar.classList.contains('hidden') ? 'Expand' : 'Collapse';
-  });
-
-  // Print to PDF
-  document.getElementById('printPdf').addEventListener('click', () => window.print());
-
-  // Generate static export (placeholder)
-  document.getElementById('downloadZip').addEventListener('click', () => {
-    alert('Static export placeholder — I can produce a single-file HTML export including all assets if you want.');
-  });
-
-  // Accessibility: focus on section after clicking TOC
-  document.querySelectorAll('#toc a').forEach(a => {
-    a.addEventListener('click', () => {
-      const id = a.getAttribute('href').slice(1);
-      setTimeout(()=> {
-        const el = document.getElementById(id);
-        if (el) el.setAttribute('tabindex','-1'), el.focus();
-      }, 300);
-    });
-  });
-</script>
-</body>
-</html>
+    <div class="mt-8 p-6 bg-gradient-to-r from-white to-blue-50 rounded-lg border flex items-center justify-between">
+      <div>
+        <div class="text-lg font-semibold">Want a PDF or single-file site?</div>
+        <div class="text-sm text-slate-700 mt-1">Use the print/export feature or request a static export of this documentation.</div>
+      </div>
+      <div>
+        <button id="downloadZip" class="bg-blue-600 text-white px-4 py-2 rounded">Generate static export</button>
+      </div>
+    </div>
+  </section>
+</article>
+</div> </main> <footer class="max-w-7xl mx-auto px-4 md:px-6 mt-12 py-6 text-sm text-slate-600 text-center"> © JAnalytics - Built with Java♨️ - v1.2.0 </footer> <!-- JS UX --> <script> const dmToggle = document.getElementById('dmToggle'); const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; const saved = localStorage.getItem('janalytics-dark'); const isDark = saved ? saved === '1' : prefersDark; if (isDark) document.documentElement.classList.add('dark'), document.body.classList.add('dark'); dmToggle.addEventListener('click', () => { document.documentElement.classList.toggle('dark'); document.body.classList.toggle('dark'); localStorage.setItem('janalytics-dark', document.documentElement.classList.contains('dark') ? '1' : '0'); }); const globalSearch = document.getElementById('globalSearch'); globalSearch?.addEventListener('input', e => { const q = e.target.value.trim().toLowerCase(); const sections = Array.from(document.querySelectorAll('article, section, h4, h3')); if (!q) { sections.forEach(s => s.style.display = ''); return; } sections.forEach(s => { const text = s.innerText.toLowerCase(); s.style.display = text.includes(q) ? '' : 'none'; }); }); document.querySelectorAll('.copyBtn').forEach(btn => { btn.addEventListener('click', async () => { const txt = btn.getAttribute('data-copy') || btn.closest('div')?.querySelector('pre code')?.innerText; if (!txt) return; try { await navigator.clipboard.writeText(txt); const old = btn.innerText; btn.innerText = 'Copied!'; setTimeout(() => btn.innerText = old, 1200); } catch { alert('Copy failed, please select manually'); } }); }); document.querySelectorAll('.collapseBtn').forEach(btn => { btn.addEventListener('click', () => { const pre = btn.closest('.code')?.querySelector('pre'); if (!pre) return; pre.classList.toggle('hidden'); }); }); const tocLinks = Array.from(document.querySelectorAll('#toc a')); const headings = tocLinks.map(a => { const id = a.getAttribute('href')?.slice(1); return id ? document.getElementById(id) : null; }).filter(Boolean); function onScrollSpy() { const offset = window.scrollY + 140; let current = null; for (const h of headings) { if (h.offsetTop <= offset) current = h; } tocLinks.forEach(a => a.classList.remove('toc-active')); if (current) { const link = tocLinks.find(a => a.getAttribute('href')?.slice(1) === current.id); if (link) link.classList.add('toc-active'); } } window.addEventListener('scroll', onScrollSpy); onScrollSpy(); const tocCollapseBtn = document.getElementById('tocCollapseBtn'); const sidebar = document.getElementById('sidebar'); tocCollapseBtn.addEventListener('click', () => { sidebar.classList.toggle('hidden'); tocCollapseBtn.innerText = sidebar.classList.contains('hidden') ? 'Expand' : 'Collapse'; }); document.getElementById('printPdf').addEventListener('click', () => window.print()); document.getElementById('downloadZip').addEventListener('click', () => { alert('Static export placeholder — contact for a full single-file export.'); }); document.querySelectorAll('#toc a').forEach(a => { a.addEventListener('click', () => { const id = a.getAttribute('href').slice(1); setTimeout(() => { const el = document.getElementById(id); if (el) el.setAttribute('tabindex', '-1'), el.focus(); }, 300); }); }); </script> </body> </html>
